@@ -1,0 +1,8 @@
+trigger AccountTrigger on Account (before insert) {
+for(Account objAcc : Trigger.New){
+if(String.isBlank(objAcc.Rating))
+{
+objAcc.Rating ='Hot';
+}
+}
+}
