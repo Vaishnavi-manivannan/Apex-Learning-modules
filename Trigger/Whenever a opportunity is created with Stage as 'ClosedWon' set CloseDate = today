@@ -1,0 +1,8 @@
+trigger OpportunityTrigger on Opportunity (before insert) {
+    for(Opportunity objOpp: Trigger.New){
+        if(objOpp.StageName == 'ClosedWon'){
+            objOpp.CloseDate = Date.today();
+        }
+          
+    }
+}
