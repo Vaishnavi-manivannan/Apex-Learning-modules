@@ -1,0 +1,12 @@
+trigger AccountTrigger on Account (after insert) {
+    for(Account objAcc: Trigger.New){
+        if(objAcc.Industry == 'Banking'){
+            Opportunity objOpp = new Opportunity();
+            objOpp.Name = objAcc.Name;
+            // Opportunity name and account name will be same 
+            objOpp.StageName = 'Prospecting';
+            objOpp.CloseDate = System.Today().addDays(15);
+        }
+          
+    }
+}
