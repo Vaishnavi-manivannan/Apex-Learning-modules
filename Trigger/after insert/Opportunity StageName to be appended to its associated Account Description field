@@ -1,0 +1,16 @@
+trigger PopulateAccDescription on Opportunity (after insert,after update) {
+    for(Opportunity opp : Trigger.New){
+        Account objAcc = [SELECT Id, Description FROM Account WHERE Id = :opp.AccountId];
+        //:opp.AccountId is used because opp instance is holding a value of the accounts id 
+        //in trigger.new we cannot update the saved function. so we are querying the record and saving it on another instance to call upon later
+        //when the account is created, the id is already created and save. we can use this id. once account is created with random description, opportunity is created. 
+        //the trigger is to update account description with that of opportunities stage name.
+        //so it is to update a record that is already saved. this is not allowed, as trigger.new in after insert is always read -only
+        //to append the record to the existing description we are querying the account id and storing in opp.AccountId;
+        //by doing this, we are pointing the new account's value objAcc is moved to opp.AccountId.
+        //so when you call objAcc.Description, it will fetch from opp.AccountId and append.
+        objAcc.Description =objAcc.Description+opp.StageName;
+        
+    }
+    update objAcc;
+}
