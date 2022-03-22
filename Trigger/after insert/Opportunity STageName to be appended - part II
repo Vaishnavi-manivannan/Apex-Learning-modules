@@ -1,0 +1,22 @@
+trigger PopulateAccDescription on Opportunity (after insert,after update) 
+{
+    List<Account> lstAcc = new List<Account>();
+     set<Id> setAccids = new set<Id>();
+    
+   for(Opportunity opp : Trigger.New)
+   {
+        setAccids.add(opp.AccountId);
+       }
+   Map<Id, Account> mapAcc = new Map<Id, Account>([SELECT Id, Description FROM Account WHERE Id IN: setAccids)];
+   for(Opportunity opp : Trigger.New)
+    {
+    if (Trigger.IsInsert || (Trigger.IsUpdate && Trigger.OldMap.get(opp.Id).StageName !=opp.StageName ))
+        {
+            Account objAcc = mapAcc.get(opp.AccountId);
+            objAcc.Description=objAcc.Description +' '+opp.StageName;
+            lstAcc.add(objAcc);   
+        }
+     
+    }
+          update lstAcc;                                         
+  }      
