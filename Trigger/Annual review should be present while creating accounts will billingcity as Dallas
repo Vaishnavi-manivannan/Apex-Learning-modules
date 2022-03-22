@@ -1,0 +1,8 @@
+trigger AccountTrigger on Account (before insert) {
+    for(Account objAcc : Trigger.New){
+        if(objAcc.BillingCity == 'Dallas' && objAcc.AnnualRevenue == NULL){
+            objAcc.addError('AnnualRevenue should be added');
+        }
+          
+    }
+}
