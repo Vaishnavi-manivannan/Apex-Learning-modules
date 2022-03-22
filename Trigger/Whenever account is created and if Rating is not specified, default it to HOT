@@ -1,0 +1,9 @@
+trigger AccountTrigger on Account (before insert) {
+    for(Account objAcc : Trigger.New){
+        if(String.isBlank(objAcc.Rating)){
+        //only if the rating is not specified by user while creating account, this will change to hot
+            objAcc.Rating = 'Hot';
+        }
+          
+    }
+}
