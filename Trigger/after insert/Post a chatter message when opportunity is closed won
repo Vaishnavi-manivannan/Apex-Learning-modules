@@ -1,0 +1,19 @@
+trigger PostToChatter on Opportunity (after insert, after update) {
+    List<FeedItem> lstItem = new List<FeedItem>();
+   
+    for (Opportunity opp : Trigger.New)
+    {
+        if (opp.StageName == 'ClosedWon')
+        {
+            if(Trigger.isInsert || Trigger.isUpdate && Trigger.OldMap.get(opp.Id).StageName != opp.StageName){
+             FeedItem post = new FeedItem();
+            post.ParentID = opp.Id;
+            post.Body = 'Opportunity reached Closed Won';
+            lstItem.add(post);   
+            }
+            
+        }
+        
+    }
+insert lstItem;
+}
