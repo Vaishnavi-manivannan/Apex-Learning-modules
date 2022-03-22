@@ -1,0 +1,19 @@
+trigger PopulateID on Contact (after insert) {
+//List<Contact> lstCon = new List<Contact>();
+    for(Contact objCon: Trigger.New){
+    Contact con = new Contact();
+    //Creating a new own instance instead of manipulating Trigger.New 
+    //the Contact is already created and its read-only on Trigger.New , hence no modification can be done directly.
+    //Hence we are creating new instance and saving. However code will break on this method. Hence prefer List 
+   
+    con.Id=objCon.Id;
+    
+        con.Record_Id__c = objCon.Id;
+        update con;
+        //update con;cannot be called outside for loop to save DML governor limit. 
+        //hence list is called 
+        //update.con can only be used for user count less than 150
+          
+    }
+    //update lstCon;
+}
