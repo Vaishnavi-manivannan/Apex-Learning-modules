@@ -4,6 +4,8 @@ trigger AccountTrigger on Account (after insert) {
             Opportunity objOpp = new Opportunity();
             objOpp.Name = objAcc.Name;
             // Opportunity name and account name will be same 
+            objOpp.AccountId = objAcc.ID;
+            //Tagging the opportunity to the account using the IDs
             objOpp.StageName = 'Prospecting';
             objOpp.CloseDate = System.Today().addDays(15);
         }
